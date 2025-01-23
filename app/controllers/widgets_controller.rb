@@ -1,3 +1,5 @@
+require "ip_anonymizer"
+
 # TODO : Delete this and associated spec once 'api/widget/config' end point is merged
 class WidgetsController < ActionController::Base
   include WidgetHelper
@@ -66,7 +68,7 @@ class WidgetsController < ActionController::Base
 
   def additional_attributes
     if @web_widget.inbox.account.feature_enabled?('ip_lookup')
-      { created_at_ip: request.remote_ip }
+      { created_at_ip: IpAnonymizer.mask_ip(request.remote_ip) }
     else
       {}
     end

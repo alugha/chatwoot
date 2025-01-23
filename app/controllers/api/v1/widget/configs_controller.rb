@@ -1,3 +1,5 @@
+require "ip_anonymizer"
+
 class Api::V1::Widget::ConfigsController < Api::V1::Widget::BaseController
   before_action :set_global_config
 
@@ -39,7 +41,7 @@ class Api::V1::Widget::ConfigsController < Api::V1::Widget::BaseController
 
   def additional_attributes
     if @web_widget.inbox.account.feature_enabled?('ip_lookup')
-      { created_at_ip: request.remote_ip }
+      { created_at_ip: IpAnonymizer.mask_ip(request.remote_ip) }
     else
       {}
     end
